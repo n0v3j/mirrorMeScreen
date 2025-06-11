@@ -28,8 +28,7 @@ async function startCapture() {
 // 4. Create session
 document.getElementById("create").onclick = async () => {
   const sessionId = Math.random().toString(36).substring(2, 8);
-  const offerStream = await startCapture();
-  offerStream.getTracks().forEach(track => pc.addTrack(track, offerStream));
+
 
   const offer = await pc.createOffer();
   await pc.setLocalDescription(offer);
@@ -72,6 +71,9 @@ document.getElementById("join").onclick = async () => {
     return;
   }
   const session = snap.data();
+
+  const offerStream = await startCapture();
+  offerStream.getTracks().forEach(track => pc.addTrack(track, offerStream));
 
   await pc.setRemoteDescription(new RTCSessionDescription(session.offer));
   const answer = await pc.createAnswer();
